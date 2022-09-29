@@ -1,5 +1,6 @@
 package hellojpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,13 +8,16 @@ import javax.persistence.Id;
 public class Member {
     @Id
     private Long id;
+    @Column(name = "name" , length = 10)
     private String name;
+    private Integer age;
 
     public Member() {}
 
-    public Member(Long id, String name) {
+    public Member(Long id, String name , Integer age) {
         this.id = id;
         this.name = name;
+        this.age = age;
     }
 
     public Long getId() {
