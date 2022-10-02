@@ -86,10 +86,10 @@ public class JpaMain {
         /**
          * 엔티티 수정 감지 ( 더티 체크 )
          */
-        Member member = em.find(Member.class, 5L);
+        /*Member member = em.find(Member.class, 5L);
         tx.begin();
         member.setName("updateTest"); // set만해도 update 가능.
-        tx.commit();
+        tx.commit();*/
 
 
 
