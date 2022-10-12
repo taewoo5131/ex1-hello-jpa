@@ -11,6 +11,33 @@ public class JpaMain {
         EntityManager em = emf.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            /*Team team = new Team();
+            team.setTeamName("Manchester.UTD");
+            em.persist(team);
+            Player player = new Player();
+            player.setName("Rooney");
+            player.setTeamId(team.getTeamId()); // 객체지향스럽지 않다.
+            em.persist(player);*/
+
+            Team team = new Team();
+            team.setTeamName("NewCastle");
+
+            em.persist(team);
+            Player player = new Player();
+            player.setName("Wilson");
+            player.setTeam(team);
+            em.persist(player);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+
+
 
         // 등록
         /*try {
