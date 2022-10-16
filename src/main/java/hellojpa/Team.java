@@ -1,9 +1,8 @@
 package hellojpa;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Team {
@@ -11,6 +10,9 @@ public class Team {
     private Long teamId;
     @Column(name = "TEAM_NAME")
     private String teamName;
+
+    @OneToMany(mappedBy = "team")
+    List<Player> players = new ArrayList<Player>();
 
     public Long getTeamId() {
         return teamId;
@@ -26,5 +28,13 @@ public class Team {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }

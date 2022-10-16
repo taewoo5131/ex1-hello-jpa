@@ -10,6 +10,7 @@ public class Player {
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
     private String name;
 
     public Long getId() {
