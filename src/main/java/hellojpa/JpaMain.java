@@ -24,22 +24,34 @@ public class JpaMain {
 
             Team team = new Team();
             team.setTeamName("NewCastle");
-
             em.persist(team);
+
             Player player = new Player();
             player.setName("Wilson");
             player.setTeam(team);
             em.persist(player);
+            team.getPlayers().add(player);
 
-            em.flush();
-            em.clear();
 
-            Player findPlayer = em.find(Player.class, player.getId());
-            List<Player> findPlayersByTeam = findPlayer.getTeam().getPlayers();
-            findPlayersByTeam.forEach(item -> {
-                System.out.println(item.getName());
-            });
+
+            Team findTeam = em.find(Team.class, team.getTeamId());
+            List<Player> players = findTeam.getPlayers();
+            System.out.println("players size ?? "+players.size());
+
+//            em.flush();
+//            em.clear();
+
+
+
+
+
             tx.commit();
+
+
+
+
+
+
         } catch (Exception e) {
             tx.rollback();
         } finally {
