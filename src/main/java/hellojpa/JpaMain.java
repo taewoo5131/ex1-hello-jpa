@@ -1,10 +1,12 @@
 package hellojpa;
 
+import hellojpa.OneToOne.Locker;
+import hellojpa.OneToOne.Student;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -14,32 +16,8 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            /*Team team = new Team();
-            team.setTeamName("Manchester.UTD");
-            em.persist(team);
-            Player player = new Player();
-            player.setName("Rooney");
-            player.setTeamId(team.getTeamId()); // 객체지향스럽지 않다.
-            em.persist(player);*/
-
-            Team team = new Team();
-            team.setTeamName("NewCastle");
-            em.persist(team);
-
-            Player player = new Player();
-            player.setName("Wilson");
-            player.setTeam(team);
-            em.persist(player);
-            team.getPlayers().add(player);
 
 
-
-            Team findTeam = em.find(Team.class, team.getTeamId());
-            List<Player> players = findTeam.getPlayers();
-            System.out.println("players size ?? "+players.size());
-
-//            em.flush();
-//            em.clear();
 
 
 
