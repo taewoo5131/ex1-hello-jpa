@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -17,12 +18,13 @@ public class JpaMain {
         try {
             tx.begin();
 
+            Food food = new Food();
+            food.setName("빅맥");
+            food.setPrice(7000);
+            food.setCreateBy("존 홉킨스");
+            food.setCreateDate(LocalDateTime.now());
 
-
-
-
-
-
+            em.persist(food);
             tx.commit();
 
 
