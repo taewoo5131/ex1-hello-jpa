@@ -3,11 +3,9 @@ package hellojpa;
 import hellojpa.OneToOne.Locker;
 import hellojpa.OneToOne.Student;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -18,109 +16,45 @@ public class JpaMain {
         try {
             tx.begin();
 
-            Food food = new Food();
-            food.setName("빅맥");
-            food.setPrice(7000);
-            food.setCreateBy("존 홉킨스");
-            food.setCreateDate(LocalDateTime.now());
+            Team team = new Team();
+            team.setTeamName("ManchesterUTD");
+            em.persist(team);
+            em.flush();
+            em.clear();
 
-            em.persist(food);
+            Team team1 = em.find(Team.class, team.getTeamId());
+//            System.out.println("실제 엔티티 : " + team1.getClass());
+//            em.flush();
+//            em.clear();
+            Team reference = em.getReference(Team.class, team.getTeamId());
+//            System.out.println("프록시 엔티티 : " + reference.getClass());
+//            System.out.println(team1 == reference);
+
+            em.flush();
+            em.clear();
+
+            Team team2 = new Team();
+            team2.setTeamName("chelsea");
+
+            em.persist(team2);
+
+            em.flush();
+            em.clear();
+
+            Team chelsea = em.getReference(Team.class, team2.getTeamId());
+
+            em.detach(chelsea);
+
+//            System.out.println(chelsea.getTeamName()); // 초기화 할 수 없음
+
+
             tx.commit();
-
-
-
-
-
-
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
             emf.close();
         }
-
-
-
-        // 등록
-        /*try {
-            tx.begin();
-            Member member = new Member();
-            member.setId(2L);
-            member.setName("jihye");
-            em.persist(member);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-        } finally {
-            em.close();
-            emf.close();
-        }*/
-
-        // 조회
-        /*Member member = em.find(Member.class, 1L);
-        System.out.println(member.getId() + " / " + member.getName());*/
-
-        // 수정
-        /*tx.begin();
-        try {
-            Member member = em.find(Member.class, 2L);
-            member.setName("jihye2");
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-        } finally {
-            em.close();
-            emf.close();
-        }*/
-
-
-        // 삭제
-        /*Member member = em.find(Member.class, 1L);
-        tx.begin();
-        try {
-            em.remove(member);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-        } finally {
-            em.close();
-            emf.close();
-        }*/
-
-        /**
-         * 1차 캐시 저장
-         */
-        /*Member member = new Member(3L , "test");
-        tx.begin();
-        em.persist(member);
-
-        // 로그를 보면 SELECT 쿼리를 날리지 않음.
-        // 위의 persist 하면서 3L의 Member를 1차 캐시에 저장해두었기 때문에
-        // 같은 트랜잭션에 있는 find에서는 DB에서 select 해오는것이 아닌 1차 캐시에 있는 3L의 Member를 찾아온다
-        em.find(Member.class, 3L);
-
-        tx.commit();*/
-
-        /**
-         * 쓰기 지연
-         */
-        /*Member member1 = new Member(4L, "test2");
-        Member member2 = new Member(5L, "test3");
-        tx.begin();
-        em.persist(member1);
-        em.persist(member2);
-        // 위의 persist에서 insert가 되는것이 아니라 영속성 컨텍스트 안의 쓰기 지연 쿼리 저장소에 차곡 차곡 쌓아 두고
-        tx.commit(); // 트랜잭션의 commit 시점에 영속성 컨텍스트 안의 쓰기 지연 쿼리 저장소에 있는 쿼리를 DB에 날린다.*/
-
-        /**
-         * 엔티티 수정 감지 ( 더티 체크 )
-         */
-        /*Member member = em.find(Member.class, 5L);
-        tx.begin();
-        member.setName("updateTest"); // set만해도 update 가능.
-        tx.commit();*/
-
-
-
     }
 }
