@@ -17,22 +17,26 @@ public class JpaMain {
         try {
             tx.begin();
 
-            Player player = new Player();
-            player.setName("wilson");
-            em.persist(player);
+            Child child1 = new Child();
+            child1.setName("신짱구");
+            Child child2 = new Child();
+            child2.setName("신짱아");
+            Child child3 = new Child();
+            child3.setName("훈발놈");
 
+            Parent parent = new Parent();
+            parent.setName("신형만");
+            parent.addChild(child1);
+            parent.addChild(child2);
+            parent.addChild(child3); // 훈발놈을 잠시 거둬주신 신형만씨
 
-            Team team = new Team();
-            team.setTeamName("newcastle");
-            player.setTeam(team);
-            em.persist(team);
-
+            em.persist(parent);
             em.flush();
             em.clear();
 
-//            Player findPlayer = em.find(Player.class, player.getId());
-            List<Player> select_p_from_player = em.createQuery("select p from Player p", Player.class).getResultList();
-//            System.out.println(findPlayer.getTeam().getClass());
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildren().remove(2);
+
 
             tx.commit();
         } catch (Exception e) {
