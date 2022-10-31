@@ -7,7 +7,8 @@ public class Player {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 

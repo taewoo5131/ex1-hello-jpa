@@ -6,6 +6,7 @@ import hellojpa.OneToOne.Student;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -16,37 +17,22 @@ public class JpaMain {
         try {
             tx.begin();
 
+            Player player = new Player();
+            player.setName("wilson");
+            em.persist(player);
+
+
             Team team = new Team();
-            team.setTeamName("ManchesterUTD");
+            team.setTeamName("newcastle");
+            player.setTeam(team);
             em.persist(team);
-            em.flush();
-            em.clear();
-
-            Team team1 = em.find(Team.class, team.getTeamId());
-//            System.out.println("실제 엔티티 : " + team1.getClass());
-//            em.flush();
-//            em.clear();
-            Team reference = em.getReference(Team.class, team.getTeamId());
-//            System.out.println("프록시 엔티티 : " + reference.getClass());
-//            System.out.println(team1 == reference);
 
             em.flush();
             em.clear();
 
-            Team team2 = new Team();
-            team2.setTeamName("chelsea");
-
-            em.persist(team2);
-
-            em.flush();
-            em.clear();
-
-            Team chelsea = em.getReference(Team.class, team2.getTeamId());
-
-            em.detach(chelsea);
-
-//            System.out.println(chelsea.getTeamName()); // 초기화 할 수 없음
-
+//            Player findPlayer = em.find(Player.class, player.getId());
+            List<Player> select_p_from_player = em.createQuery("select p from Player p", Player.class).getResultList();
+//            System.out.println(findPlayer.getTeam().getClass());
 
             tx.commit();
         } catch (Exception e) {
